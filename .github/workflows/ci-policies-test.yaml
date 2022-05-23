@@ -87,6 +87,26 @@ jobs:
       - name: Display cilium policies
         run: |
             cat cilium_policies.yaml
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with: 
+            go-version: 1.17
+      - name: Set up Ginkgo
+        run: |
+            echo Onsi Ginkgo
+            go get github.com/onsi/ginkgo/v2/ginkgo
+            echo Onsi Gomega
+            go get github.com/onsi/gomega/...
+            echo Ubuntu Ginkgo dev
+            sudo apt-get install golang-ginkgo-dev
+
+            echo Testing...
+            ginkgo help
+      - name: Run Ginkgo testsuite
+        run: |
+            pwd
+            cd src/testingpolicies
+            go test
       - name: Get Artifacts
         if: ${{ always() }}
         run: |
