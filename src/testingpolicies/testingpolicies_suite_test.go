@@ -65,3 +65,45 @@ var _ = Describe("Knoxautopolicy validation", func(){
 		})
 	})
 })
+
+var _ = Describe("Explorer Mysql validation", func(){
+        Context("Checking Explorer Mysql validation...", func(){
+                It("return true", func(){
+                        f := types.KubeArmorPolicy{}
+
+                        ReadInstanceYaml("kubearmor_policies_default_explorer_mysql", &f)
+
+                        Expect(f.Spec.Process.MatchPaths).NotTo(BeEmpty())
+                        Expect(f.Spec.File.MatchPaths).NotTo(BeEmpty())
+                        Expect(f.Spec.Network.MatchProtocols).NotTo(BeEmpty())
+                })
+        })
+})
+
+var _ = Describe("Wordpress-Mysql Mysql validation", func(){
+        Context("Checking Wordpress-Mysql Mysql validation...", func(){
+                It("return true", func(){
+                        f := types.KubeArmorPolicy{}
+
+                        ReadInstanceYaml("kubearmor_policies_default_wordpress-mysql_mysql", &f)
+
+                        Expect(f.Spec.Process.MatchPaths).NotTo(BeEmpty())
+                        Expect(f.Spec.File.MatchPaths).NotTo(BeEmpty())
+                        Expect(f.Spec.Network.MatchProtocols).NotTo(BeEmpty())
+                })
+        })
+})
+
+var _ = Describe("Wordpress-Mysql Wordpress validation", func(){
+        Context("Checking Wordpress-Mysql Wordpress validation...", func(){
+                It("return true", func(){
+                        f := types.KubeArmorPolicy{}
+
+                        ReadInstanceYaml("kubearmor_policies_default_wordpress-mysql_wordpress", &f)
+
+                        Expect(f.Spec.Process.MatchPaths).NotTo(BeEmpty())
+                        Expect(f.Spec.File.MatchPaths).NotTo(BeEmpty())
+                        Expect(f.Spec.Network.MatchProtocols).NotTo(BeEmpty())
+                })
+        })
+})
