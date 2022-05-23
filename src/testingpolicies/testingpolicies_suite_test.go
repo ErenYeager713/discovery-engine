@@ -24,6 +24,7 @@ func ReadInstanceYaml(serverFile string, obj *types.KubeArmorPolicy)  {
 	var files []string
 
 	root := "/home/runner/work/discovery-engine/discovery-engine"
+	//root := "tests"
 	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 		files = append(files, path)
 		return nil
@@ -58,7 +59,9 @@ var _ = Describe("Knoxautopolicy validation", func(){
 
 			ReadInstanceYaml("kubearmor_policies_default_explorer_knoxautopolicy", &f)
 
-			Expect(f.Spec.Selector.MatchLabels["container"]).To(Equal("knoxautopolicy"))
+			Expect(f.Spec.Process.MatchPaths).NotTo(BeEmpty())
+			Expect(f.Spec.File.MatchPaths).NotTo(BeEmpty())
+			Expect(f.Spec.Network.MatchProtocols).NotTo(BeEmpty())
 		})
 	})
 })
