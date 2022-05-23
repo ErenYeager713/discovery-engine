@@ -1,0 +1,64 @@
+package testingpolicies_test
+
+import (
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
+
+	"testing"
+	"github.com/accuknox/auto-policy-discovery/src/types"
+	"io/ioutil"
+	"gopkg.in/yaml.v2"
+	"os"
+	"log"
+	"path/filepath"
+	"strings"
+)
+
+func TestTestingpolicies(t *testing.T) {
+	RegisterFailHandler(Fail)
+	RunSpecs(t, "Testingpolicies Suite")
+}
+
+func ReadInstanceYaml(serverFile string, obj *types.KubeArmorPolicy)  {
+
+	var files []string
+
+	root := "/home/runner/work/discovery-engine/discovery-engine"
+	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+		files = append(files, path)
+		return nil
+	})
+
+	if err != nil {
+		panic(err)
+	}
+
+	for _, file := range files {
+		var res = strings.Contains(file, serverFile)
+		if res == true {
+			source, err1 := ioutil.ReadFile(file)
+
+			 if err1 != nil {
+			    log.Printf("Error: %v", err1.Error())
+			 }
+
+			 err1 = yaml.Unmarshal(source, &obj)
+			 if err1 != nil {
+			    log.Printf("Error: %v", err1.Error())
+			 }
+			break;
+		}
+	}
+}
+
+var _ = Describe("Knoxautopolicy validation", func(){
+	Context("Checking Knoxautopolicy validation...", func(){
+		It("return true", func(){
+			f := types.KubeArmorPolicy{}
+
+			ReadInstanceYaml("kubearmor_policies_default_explorer_knoxautopolicy", &f)
+
+			Expect(f.Spec.Selector.MatchLabels["container"]).To(Equal("knoxautopolicy"))
+		})
+	})
+})
